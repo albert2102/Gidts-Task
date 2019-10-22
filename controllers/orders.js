@@ -7,6 +7,11 @@ const user = require('../models/users');
 let index;
 
 exports.createOrder = (req,res,next)=>{
+  if (typeof req.body.gifts !== 'string' && typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof date !== 'string'  ) {
+    const error = new Error('It must be string.');
+    error.statusCode = 401;
+    throw error;
+  }
     const errors = validationResult(req) ;
         if(!errors.isEmpty()){
              const error =new Error('Validation Failed!');
@@ -14,11 +19,7 @@ exports.createOrder = (req,res,next)=>{
              error.data =errors.array();
              throw error; 
         }
-        if (  typeof req.body.gifts !== 'string'&&typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof date !== 'string'  ) {
-          const error = new Error('It must be string.');
-          error.statusCode = 401;
-          throw error;
-        }
+      
     const gifts =  req.body.gifts.split(',');
     const location = req.body.location.split(',');
     const destinationAddress = req.body.destinationAddress.split(',');
@@ -135,6 +136,12 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.updateOrder = (req, res, next) => {
+  
+if (typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string'   ) {
+  const error = new Error('It must be string.');
+  error.statusCode = 401;
+  throw error;
+}
   const orderId = req.params.orderId;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -143,11 +150,6 @@ exports.updateOrder = (req, res, next) => {
     throw error;
   }
 
-if (typeof req.body.gifts !== 'string' &&typeof req.body.location !== 'string'&& typeof req.body.destinationAddress !== 'string'   ) {
-  const error = new Error('It must be string.');
-  error.statusCode = 401;
-  throw error;
-}
   const gifts =  req.body.gifts.split(',');
   const location = req.body.location.split(',');
   const destinationAddress = req.body.destinationAddress.split(',');

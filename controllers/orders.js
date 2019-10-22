@@ -14,7 +14,7 @@ exports.createOrder = (req,res,next)=>{
              error.data =errors.array();
              throw error; 
         }
-        if (  typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' &&typeof date !== 'string'  ) {
+        if (  typeof req.body.gifts !== 'string'&&typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof date !== 'string'  ) {
           const error = new Error('It must be string.');
           error.statusCode = 401;
           throw error;

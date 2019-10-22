@@ -7,7 +7,7 @@ const user = require('../models/users');
 let index;
 
 exports.createOrder = (req,res,next)=>{
-  if (typeof req.body.gifts !== 'string' && typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof date !== 'string'  ) {
+  if (typeof req.body.gifts !== 'string' && typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof req.body.date !== 'string'  ) {
     const error = new Error('It must be string.');
     error.statusCode = 401;
     throw error;
@@ -136,7 +136,6 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.updateOrder = (req, res, next) => {
-  
 if (typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string'   ) {
   const error = new Error('It must be string.');
   error.statusCode = 401;

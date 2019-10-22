@@ -33,7 +33,6 @@ router.post('/login',driversController.login);
 
 router.get('/getDriver/',isAuth, driversController.getDriver);
 
-router.get('/getDriver/:driverId',isAuth, driversController.getDriver);
   router.put(
     '/updateDriver/:driverId',
     isAuth,

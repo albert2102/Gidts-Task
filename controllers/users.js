@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt =require('jsonwebtoken');
 
 const User = require('../models/users');
-
+// user / signup
 exports.signup = (req,res,next)=>{
     const errors = validationResult(req) ;
         if(!errors.isEmpty()){
@@ -47,8 +47,7 @@ exports.signup = (req,res,next)=>{
         throw error;    
      }
 };
-
-
+// user / login
 exports.login =(req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;

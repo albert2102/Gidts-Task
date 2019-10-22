@@ -4,7 +4,7 @@ const jwt =require('jsonwebtoken');
 
 const drivers = require('../models/drivers');
 
-
+// Admin /Driver/signup
 exports.signup = (req,res,next)=>{
   const errors = validationResult(req) ;
       if(!errors.isEmpty()){
@@ -49,7 +49,7 @@ exports.signup = (req,res,next)=>{
    }
 };
 
-
+// driver /login
 exports.login =(req,res,next)=>{
   const email = req.body.email;
   const password = req.body.password;
@@ -87,9 +87,9 @@ exports.login =(req,res,next)=>{
       next(err);
        });
 };
-
+// Admin /getDriver
 exports.getDriver = (req, res, next) => {
-    drivers.findById()
+    drivers.find()
       .then(driver => {
         if (!driver) {
           const error = new Error('Could not find driver.');
@@ -105,10 +105,11 @@ exports.getDriver = (req, res, next) => {
         next(err);
       });
   };
-
-
+// Admin /updateDriver
   exports.updateDriver = (req, res, next) => {
     const driverId = req.params.driverId;
+    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error('Validation failed, entered data is incorrect.');
@@ -118,8 +119,8 @@ exports.getDriver = (req, res, next) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const phoneNumber = req.body.phoneNumber;
-    const email =req.bady.email;
-    const password =req.bady.password;
+    const email =req.body.email;
+    const password =req.body.password;
     let loadeddriver;
     drivers.findById(driverId)
       .then(driver => {
@@ -137,7 +138,7 @@ exports.getDriver = (req, res, next) => {
         loadeddriver.phoneNumber = phoneNumber;
         loadeddriver.email = email;
         loadeddriver.password = hasPW;
-        return driver.save();
+        return loadeddriver.save();
       })
       .then(result => {
         res.status(200).json({ status:200, message: 'Driver updated!', driver: result });
@@ -149,7 +150,7 @@ exports.getDriver = (req, res, next) => {
         next(err);
       });
   };
-
+// Admin /deleteDriver
   exports.deleteDriver = (req, res, next) => {
     const driverId = req.params.driverId;
     drivers.findById(driverId)

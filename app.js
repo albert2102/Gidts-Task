@@ -3,7 +3,7 @@ const express = require('express');
 const badyParser = require('body-parser');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const uuidv4 = require('uuid/v4')
+const uuidv4 = require('uuid/v4');
 require('dotenv').config();
 
 const userRoutes =require('./routes/users');
@@ -38,7 +38,7 @@ const fileStorage = multer.diskStorage({
 app.use(badyParser.json());
 
 app.use(
-    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+    multer({ fileStorage: fileStorage, fileFilter: fileFilter }).single('image')
   );
 
 app.use('/images', express.static(path.join(__dirname, 'images')));

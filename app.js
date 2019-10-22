@@ -15,7 +15,7 @@ const adminRoutes = require('./routes/admin');
 const app =express();
 app.use(express.json());
 
-const storage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: function(req, file, cb) {
       cb(null, 'images');
   },

@@ -14,7 +14,7 @@ exports.createOrder = (req,res,next)=>{
              error.data =errors.array();
              throw error; 
         }
-        if (  typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' &&typeof req.body.date !== 'string'  ) {
+        if (  typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' &&typeof date !== 'string'  ) {
           const error = new Error('It must be string.');
           error.statusCode = 401;
           throw error;
@@ -183,7 +183,7 @@ if (typeof req.body.gifts !== 'string' &&typeof req.body.location !== 'string'&&
 exports.isOrderDeliverd = (req, res, next) => {
   const orderId = req.params.orderId;
 if (typeof req.body.isdeliveried !== "string" ) {
-  const error = new Error('It must be boolean.');
+  const error = new Error('It must be string.');
   error.statusCode = 407;
   throw error;
 }

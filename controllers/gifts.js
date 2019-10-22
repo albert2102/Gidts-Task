@@ -48,7 +48,7 @@ exports.getGifts = (req, res, next) => {
       error.statusCode = 422;
       throw error;
     }
-    const imageUrl = req.file.path.replace("\\" ,"/");
+    const imageUrl = req.file.path;
     const title = req.body.title;
     const description = req.body.description;
     const gift = new gifts({
@@ -102,7 +102,7 @@ exports.getGifts = (req, res, next) => {
     }
     const title = req.body.title;
     const description = req.body.description;
-    let imageUrl = req.body.image;
+    let imageUrl ;
     if (req.file) {
       imageUrl = req.file.path;
     }

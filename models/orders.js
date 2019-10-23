@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
+//Order Schema
 const orderSchema = new schema({
   gifts:[{
      type: mongoose.Schema.Types.ObjectId,

@@ -2,13 +2,12 @@ const express = require('express');
 const { body } = require('express-validator');
 
 const giftsController = require('../controllers/gifts');
-const isUserAuth = require('../middleware/is-userAuth');
 const isAdminAuth = require('../middleware/is-adminAuth');
 
 const router = express.Router();
 
-//User GET /Gifts
-router.get('/getGifts', isUserAuth, giftsController.getGifts);
+//Puplic GET /Gifts 
+router.get('/getGifts', giftsController.getGifts);
 
 //Admin POST/Gift
 router.post(
@@ -25,11 +24,12 @@ router.post(
     giftsController.createGifts
   );
   
-  //Admin GET/Gift
-  router.get('/gift/:giftId',isAdminAuth, giftsController.getGift);
+  //Admin GET/Gift by id
+  router.get('/getGift',isAdminAuth, giftsController.getGift);
 
+//Admin update/Gift
   router.put(
-    '/gift/:giftId',
+    '/put/:giftId',
     isAdminAuth,
     [
       body('title')
@@ -41,6 +41,9 @@ router.post(
     ],
     giftsController.updateGift
   );
+
+  //Admin update/Gift
+  router.delete('/deleteGift/:giftId',isAdminAuth, giftsController.deleteGift);
+
   
-  router.delete('/gift/:giftId',isAdminAuth, giftsController.deleteGift);
   module.exports = router;

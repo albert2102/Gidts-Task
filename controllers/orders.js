@@ -6,7 +6,9 @@ const user = require('../models/users');
 
 let index;
 
+//User create/Order
 exports.createOrder = (req,res,next)=>{
+
   if (typeof req.body.gifts !== 'string' && typeof driverDates !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string' && typeof req.body.date !== 'string'  ) {
     const error = new Error('It must be string.');
     error.statusCode = 401;
@@ -36,12 +38,13 @@ exports.createOrder = (req,res,next)=>{
       .then(driver => {
         let counter = 0;
         let driverDates ;
+        //Select The Available Driver
         for(let i=0;i<driver.length;i++)
         {
           driversdates[i] = driver[i].deliveryDates.length;
         }
-        const availableDriver = Math.min(...driversdates);
-        index = driversdates.indexOf(availableDriver);
+        const availableDriver = Math.min(...driversdates);    
+        index = driversdates.indexOf(availableDriver);  
         for(let i=0;i<driver.length;i++)
           {
             if(driver[i].deliveryDates.length !==0){
@@ -65,6 +68,7 @@ exports.createOrder = (req,res,next)=>{
               break;
             }
         }
+         
         if (!choosenDriver) {
             const error = new Error('No driver available at this time.');
             error.statusCode = 406;
@@ -116,6 +120,7 @@ exports.createOrder = (req,res,next)=>{
       });
 };
 
+//User Get/Orders
 exports.getOrders = (req, res, next) => {
   const orderedUserId = req.userId;
   user.findById(orderedUserId)
@@ -135,6 +140,7 @@ exports.getOrders = (req, res, next) => {
     });
 };
 
+//User Update/Order
 exports.updateOrder = (req, res, next) => {
 if (typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' && typeof req.body.destinationAddress !== 'string'   ) {
   const error = new Error('It must be string.');
@@ -180,14 +186,9 @@ if (typeof req.body.gifts !== 'string' && typeof req.body.location !== 'string' 
     });
 };
 
-
+//Dieriver Deliverd/Orders
 exports.isOrderDeliverd = (req, res, next) => {
   const orderId = req.params.orderId;
-if (typeof req.body.isdeliveried !== "string" ) {
-  const error = new Error('It must be string.');
-  error.statusCode = 407;
-  throw error;
-}
  const isdeliveried = true;
   orders.findById(orderId)
     .then(order => {
@@ -210,6 +211,7 @@ if (typeof req.body.isdeliveried !== "string" ) {
     });
 };
 
+//User Delete/Order
 exports.deleteOrder = (req, res, next) => {
   const orderId = req.params.orderId;
   let driverId;
@@ -252,7 +254,8 @@ exports.deleteOrder = (req, res, next) => {
       next(err);
     });
 };
-  
+
+// Function To retype date to string
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),

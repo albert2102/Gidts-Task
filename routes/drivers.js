@@ -7,6 +7,7 @@ const driver = require('../models/drivers');
 
 const router =express.Router();
 
+//Admin create/driver
 router.post('/driverSignup',
  isAuth,
 [
@@ -28,11 +29,13 @@ router.post('/driverSignup',
 
 ],driversController.signup);
 
-
+//Driver login
 router.post('/login',driversController.login);
 
+//Admin get/driver
 router.get('/getDriver/',isAuth, driversController.getDriver);
 
+//Admin update/driver
   router.put(
     '/updateDriver/:driverId',
     isAuth,
@@ -57,6 +60,7 @@ router.get('/getDriver/',isAuth, driversController.getDriver);
     driversController.updateDriver
   );
   
+  //Admin delete/driver
   router.delete('/deleteDriver/:driverId',isAuth, driversController.deleteDriver);
 
 module.exports = router;

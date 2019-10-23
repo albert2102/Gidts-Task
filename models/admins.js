@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
+//Admin Schema
 const adminsSchema = new schema({
   firstName:{
     type:String,

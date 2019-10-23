@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 
 const gifts = require('../models/gifts');
 
+//Puplic GET /Gifts  with pagination
 exports.getGifts = (req, res, next) => {
     const currentPage = req.query.page || 1;
     const perPage = 2;
@@ -35,7 +36,7 @@ exports.getGifts = (req, res, next) => {
       });
   };
   
-
+//Admin Create /Gifts
   exports.createGifts = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -73,16 +74,28 @@ exports.getGifts = (req, res, next) => {
       });
   };
  
-  exports.getGift = (req, res, next) => {
-    const giftId = req.params.giftId;
-    gifts.findById(giftId)
-      .then(gift => {
-        if (!gift) {
-          const error = new Error('Could not find gift.');
-          error.statusCode = 404;
-          throw error;
-        }
-        res.status(200).json({ status:200,message: 'gift fetched.', gift: gift });
+//Admin GET /Gifts  with pagination
+exports.getGift = (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage = 2;
+    let totalItems;
+    gifts.find()
+      .countDocuments()
+      .then(count => {
+        totalItems = count;
+        return gifts.find()
+          .skip((currentPage - 1) * perPage)
+          .limit(perPage);
+      })
+      .then(gifts => {
+        res
+          .status(200)
+          .json({
+            status:200,
+            message: 'Fetched gifts successfully.',
+            gifts: gifts,
+            totalItems: totalItems
+          });
       })
       .catch(err => {
         if (!err.statusCode) {
@@ -91,8 +104,8 @@ exports.getGifts = (req, res, next) => {
         next(err);
       });
   };
-
-  exports.updateGift = (req, res, next) => {
+//Admin Update /Gifts
+exports.updateGift = (req, res, next) => {
     const giftId = req.params.giftId;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -136,8 +149,8 @@ exports.getGifts = (req, res, next) => {
         next(err);
       });
   };
-  
-  exports.deleteGift = (req, res, next) => {
+ //Admin Delete /Gifts 
+exports.deleteGift = (req, res, next) => {
     const giftId = req.params.giftId;
     gifts.findById(giftId)
       .then(gift => {
@@ -161,7 +174,8 @@ exports.getGifts = (req, res, next) => {
       });
   };
   
-  const clearImage = filePath => {
+// function to clear images after deleting or updating gifts
+const clearImage = filePath => {
     filePath = path.join(__dirname, '..', filePath);
     fs.unlink(filePath, err => console.log(err));
   };

@@ -3,10 +3,11 @@ const {body} =require('express-validator');
 
 const ordersController = require('../controllers/orders')
 const isUserAuth = require('../middleware/is-userAuth');
-const isDeriverAuth = require('../middleware/is-userAuth');
+const isDeriverAuth = require('../middleware/is-driverAuth');
 
 const router =express.Router();
 
+//User create/Order
 router.post('/createOrder',
 isUserAuth,
 [
@@ -18,8 +19,10 @@ isUserAuth,
 
 ],ordersController.createOrder);
 
+//User Get/Orders
 router.get('/getOrders/',isUserAuth, ordersController.getOrders);
 
+//User Update/Orders
  router.put(
     '/updateOrder/:orderId',
      isUserAuth,
@@ -33,13 +36,14 @@ router.get('/getOrders/',isUserAuth, ordersController.getOrders);
   ],
   ordersController.updateOrder
   );
-
-  router.put(
+//Dieriver Deliverd/Orders
+  router.get(
     '/isOrderDeliverd/:orderId',
     isDeriverAuth,
   ordersController.isOrderDeliverd
   );
-  
+
+//User Delete/Orders
   router.delete('/deleteOrder/:orderId',isUserAuth, ordersController.deleteOrder);
 
 module.exports = router;

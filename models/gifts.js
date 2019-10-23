@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
+//gift Schema
 const giftsSchema = new schema({
   title:{
       type:String,

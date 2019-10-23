@@ -1,3 +1,4 @@
+//Modules  we needed
 const path = require('path');
 const express = require('express');
 const badyParser = require('body-parser');
@@ -5,6 +6,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 require('dotenv').config();
+var http = require('http'), url = require("url");
 
 const userRoutes =require('./routes/users');
 const giftsRoutes =require('./routes/gifts');
@@ -15,35 +17,38 @@ const adminRoutes = require('./routes/admin');
 const app =express();
 app.use(express.json());
 
+//Images Destinaatio
 const fileStorage = multer.diskStorage({
-  destination: function(req, file, cb) {
-      cb(null, 'images');
+  destination: (req, file, cb) => {
+    cb(null, 'images');
   },
-  filename: function(req, file, cb) {
-      cb(null, new Date().toISOString() + file.originalname);
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + '-' + file.originalname);
   }
 });
-  const fileFilter = (req, file, cb) => {
-    if (
-      file.mimetype === 'image/png' ||
-      file.mimetype === 'image/jpg' ||
-      file.mimetype === 'image/jpeg'
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
+
+//Images Extention Fillter
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 app.use(badyParser.json());
 
-app.use(
-    multer({ fileStorage: fileStorage, fileFilter: fileFilter }).single('image')
-  );
+//Middleware To Handl Image Uploads
+app.use( multer({ storage: fileStorage, fileFilter: fileFilter }).single('imageUrl'));
 
+//Middleware To Save Image Uploads
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-
+//Middleware To Get Headers
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -54,6 +59,7 @@ app.use((req, res, next) => {
     next();
   });
 
+  //App's Middlewares To Get Headers
 app.use('/user',userRoutes);
 app.use('/gift',giftsRoutes);
 app.use('/driver',driversRoutes);
@@ -73,10 +79,13 @@ app.use((err,req,res,next)=>{
    });
 });
 
-
+//Node Server's Port on localhost or heroku
 const port =process.env.PORT || 3000;
+
+//MongoDB Atlas Server's Port on localhost or heroku or MongoDb Atlas
 const connectionString =  process.env.DATABASE_URI || 'mongodb+srv://admin:admin@cluster0-4lrxe.mongodb.net/gifts?retryWrites=true&w=majority' || 'mongodb://localhost:27017/gifts';
 
+//Conection for MongoDB Atlas and Heroku (or localhost)
 mongoose.connect(
   connectionString ,
    { useNewUrlParser: true,
@@ -84,8 +93,17 @@ mongoose.connect(
     useFindAndModify: false}
 ).then(result =>
     {
-        app.listen(port);
-        console.log('Server is connected');
+      app.use( (req, res,next)=> { 
+        // control for favicon
+        if (req === '/favicon.ico') {
+          res.writeHead(200, {'Content-Type': 'image/x-icon'} );
+          res.end();
+          return;
+        }
+        res.write(res);
+        res.end(); 
+      }).listen(port);
+        console.log('Server is connected at:'+port);
     }).catch(err => {
         console.log(err);
     });

@@ -4,6 +4,7 @@ const user = require('../models/users');
 const userController = require('../controllers/users')
 const router =express.Router();
 
+//user // signup
 router.post('/signup',[
     body('email').
     isEmail()
@@ -23,7 +24,7 @@ router.post('/signup',[
 
 ],userController.signup);
 
-
+//user // login
 router.post('/login',userController.login);
 
 

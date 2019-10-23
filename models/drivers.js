@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
+//driver Schema
 const driverSchema = new schema({
   firstName:{
     type:String,

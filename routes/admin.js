@@ -7,6 +7,7 @@ const AdminsController = require('../controllers/admins')
 
 const router =express.Router();
 
+//Admin login
 router.post('/login',AdminsController.login);
 
 module.exports = router;
